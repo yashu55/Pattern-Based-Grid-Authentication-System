@@ -1,6 +1,7 @@
 package com.patternGrid.cntr;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.google.gson.Gson;
 import com.patternGrid.dto.User;
 import com.patternGrid.randomization.RandomGridGenerator;
 import com.patternGrid.service.UserService;
@@ -87,30 +90,71 @@ public class Usercntr {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String submitUserLogin(HttpSession session, ModelMap map, HttpServletRequest req, HttpServletResponse res,
-			User user) throws IOException {
+	public String submitUserLogin(@RequestParam String randomGrid, HttpSession session, ModelMap map,
+			HttpServletRequest req, HttpServletResponse res, User user) throws IOException {
 
 		if (!(Boolean) session.getAttribute("loginValue")) {
 			// check username if exists-
 			int row = 4;
 			int col = 4;
-			String[] randomPatternGrid = RandomGridGenerator.randomizor(row*col, 2);
-			String 
-			
+			String[][] randomPatternGrid = RandomGridGenerator.randomizor(row, col, 2);
+
 			map.put("randomPatternGrid", randomPatternGrid);
 			map.put("user", user);
+			map.put("row", row);
+			map.put("col", col);
 			session.setAttribute("loginValue", true);
 			return "login";
 
+		} else if ((Boolean) session.getAttribute("loginValue")) {
+
+			String[] key = user.getUserPatternPassword().split("(?<=\\G.{2})");
+			System.out.println(Arrays.toString(key));
+			Gson gson = new Gson();
+			System.out.println(randomGrid);
+
+			String[][] randomPatternGrid = gson.fromJson(randomGrid, String[][].class);
+
+			String actualPassword = "";
+
+			for (int keyIndex = 0; keyIndex < key.length; keyIndex++) {
+				boolean flag = false;
+				int i = 0;
+				int j = 0;
+				for (i = 0; i < randomPatternGrid.length; i++) {
+					for (j = 0; j < randomPatternGrid[i].length; j++) {
+						if (key[keyIndex].contentEquals(randomPatternGrid[i][j])) {
+							flag = true;
+							System.out.println(i + " " + j + " " + key[keyIndex]);
+							break;
+						}
+					}
+					if (flag == true)
+						break;
+				}
+				if (flag != true) {
+					res.sendRedirect("login?msg=invalid");
+					return null;
+				} else {
+					actualPassword += i + "" + j;
+					System.out.println(actualPassword);
+				}
+			}
+
+			user.setUserPatternPassword(actualPassword);
+			System.out.println(actualPassword);
+
+			boolean isSuccessfulLogin = userService.isUserValid(user);
+			if (isSuccessfulLogin) {
+				session.setAttribute("sessionUserId", user.getUserId());
+				// session.setAttribute("sessionUserEmail", user.getUserEmail());
+				res.sendRedirect("home");
+				System.out.println("sessionID" + session.getId());
+			} else
+				res.sendRedirect("login?msg=invalid");
+			return null;
 		}
-		boolean isSuccessfulLogin = userService.isUserValid(user);
-		if (isSuccessfulLogin) {
-			session.setAttribute("sessionUserId", user.getUserId());
-			// session.setAttribute("sessionUserEmail", user.getUserEmail());
-			res.sendRedirect("home");
-			System.out.println("sessionID" + session.getId());
-		} else
-			res.sendRedirect("login?msg=invalid");
+
 		return null;
 	}
 

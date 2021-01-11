@@ -18,17 +18,17 @@ public class RandomGridGenerator {
 		return false;
 	}
 
-	public static String[] randomizor(int size, int maxCharPerString) {
-
+	public static String[][] randomizor(int row, int col, int maxCharPerString) {
+		int size = row * col;
 		String[] randomString = new String[size];
 		int counter = 0;
 		SecureRandom rand = new SecureRandom();
 		while (counter < size) {
 			String genString = "";
-			int currStringSize = rand.nextInt(maxCharPerString);
-			currStringSize++;
+			// int currStringSize = rand.nextInt(maxCharPerString);
+			// currStringSize++;
 			// System.out.println(currStringSize);
-			for (int j = 0; j < currStringSize; j++) {
+			for (int j = 0; j < maxCharPerString; j++) {
 				int index = rand.nextInt(alphaNumericCharArray.length);
 				genString += ((Character) alphaNumericCharArray[index]).toString();
 			}
@@ -37,7 +37,17 @@ public class RandomGridGenerator {
 				counter++;
 			}
 		}
-		return randomString;
+
+		String[][] randomStringJagged = new String[row][col];
+		int dummyCounter = 0;
+		for (int i = 0; i < row; i++) {
+			for (int j = 0; j < col; j++) {
+				randomStringJagged[i][j] = randomString[dummyCounter];
+				dummyCounter++;
+			}
+		}
+
+		return randomStringJagged;
 	}
 
 }

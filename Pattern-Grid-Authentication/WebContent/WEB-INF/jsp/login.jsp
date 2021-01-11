@@ -1,3 +1,5 @@
+<%@page import="com.google.gson.Gson"%>
+<%@page import="org.springframework.http.converter.json.GsonBuilderUtils"%>
 <%@page import="com.patternGrid.dto.User"%>
 <%@page import="java.util.Map"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -23,12 +25,23 @@
 <jsp:include page="navbar.jsp" />  
 
 <% 
-boolean beforeRandomPattern = (Boolean)session.getAttribute("loginValue"); 
-String[] randomPatternGrid = (String[])request.getAttribute("randomPatternGrid");
+Boolean beforeRandomPattern = (Boolean)session.getAttribute("loginValue");
+if(beforeRandomPattern == null)
+	beforeRandomPattern = false;
+String[][] randomPatternGrid = (String[][])request.getAttribute("randomPatternGrid");
 User user = (User)request.getAttribute("user");
 String userIdValue = "";
+String randomPatternGridJSON = "";
+
 if(user != null){
 	userIdValue = user.getUserId();
+}
+
+if(randomPatternGrid != null){
+	{
+		Gson gson = new Gson();
+		 randomPatternGridJSON = gson.toJson(randomPatternGrid);
+	}
 }
 %>
 
@@ -58,55 +71,38 @@ if(user != null){
                 
                 
                 
-        <!-- Random Grid Logic -->   
-        
-        <% if(beforeRandomPattern){ %>           
+        <!-- Random Grid Logic -->         
+        <% if(beforeRandomPattern){ %>  
+        <% int row =  (Integer)request.getAttribute("row");
+                   	  int col =  (Integer)request.getAttribute("col");
+                   	  int cx = 50;
+                   	  int cy = 50;
+         %>
                <div class="container-fluid m-0 p-0">
                 <p>Pattern Grid</p>
                  <div class="row d-flex justify-content-center" >
                    <div class="col d-flex justify-content-center align-items-center" style="height:250px;">
-                  <svg  version="1.1" height="100%" viewBox="0 0 300 300">
+                  <svg  version="1.1" height="100%" viewBox="0 0 <%=row*100 %> <%=col*100 %>">
                    
-                    <circle cx="50" cy="50" r="40" stroke="black" stroke-width="5" fill="#87CEFA" fill-opacity="0.5" />
-                    <text x="50" y="50" text-anchor="middle" stroke="black" font-size="3em" dy=".3em">ch</text>
                    
-                    <circle cx="150" cy="50" r="40" stroke="black" stroke-width="5" fill="#87CEFA" fill-opacity="0.5" />
-                    <text x="150" y="50" text-anchor="middle" stroke="black" font-size="3em" dy=".3em">1R</text>
-                    
-                    <circle cx="250" cy="50" r="40" stroke="black" stroke-width="5" fill="#87CEFA" fill-opacity="0.5" />
-                    <text x="250" y="50" text-anchor="middle" stroke="black" font-size="3em" dy=".3em">tU</text>
-                    
-                    <circle cx="50" cy="150" r="40" stroke="black" stroke-width="5" fill="#87CEFA" fill-opacity="0.5" />
-                    <text x="50" y="150" text-anchor="middle" stroke="black" font-size="3em" dy=".3em">8x</text>
-                    
-                    <circle cx="150" cy="150" r="40" stroke="black" stroke-width="5" fill="#87CEFA" fill-opacity="0.5" />
-                    <text x="150" y="150" text-anchor="middle" stroke="black" font-size="3em" dy=".3em">uI</text>
-                    
-                    <circle cx="250" cy="150" r="40" stroke="black" stroke-width="5" fill="#87CEFA" fill-opacity="0.5" />
-                    <text x="250" y="150" text-anchor="middle" stroke="black" font-size="3em" dy=".3em">p0</text>
-                    
-                     <circle cx="50" cy="250" r="40" stroke="black" stroke-width="5" fill="#87CEFA" fill-opacity="0.5" />
-                    <text x="50" y="250" text-anchor="middle" stroke="black" font-size="3em" dy=".3em">q2</text>
-                    
-                    <circle cx="150" cy="250" r="40" stroke="black" stroke-width="5" fill="#87CEFA" fill-opacity="0.5" />
-                    <text x="150" y="250" text-anchor="middle" stroke="black" font-size="3em" dy=".3em">v4</text>
-                    
-                    <circle cx="250" cy="250" r="40" stroke="black" stroke-width="5" fill="#87CEFA" fill-opacity="0.5" />
-                    <text x="250" y="250" text-anchor="middle" stroke="black" font-size="3em" dy=".3em">77</text>
-                    
+                   <% for(int i=0; i <  row; i++){	
+                	   		for(int j=0; j < col; j++){
+                	 %>
+                	   		 <circle cx="<%=cx + j*100 %>" cy="<%=cy + i*100 %>" r="40" stroke="black" stroke-width="5" fill="#87CEFA" fill-opacity="0.5" />
+                             <text x="<%=cx + j*100 %>" y="<%=cy + i*100 %>" text-anchor="middle" stroke="black" font-size="2.5em" dy=".3em"><%=randomPatternGrid[i][j] %></text>
+                   <%         	
+                	   		}
+                   		}
+                   %>
+                   
                   </svg> 
                 </div>
                 </div>
                 </div>
           <%}; %>
-          
-                <%if(beforeRandomPattern){ %> 	
-                <% for(int i = 0; i < randomPatternGrid.length; i++) {%>
-                	<%=randomPatternGrid[i]%>
-                	<%}; %>
-                <%};%>
-            
-              
+  
+  <!-- Random Grid Logic End -->        
+                  
          <!--Pattern Password Logic -->
               <%if(beforeRandomPattern){ %>
                  <div class="form-group">
@@ -116,6 +112,11 @@ if(user != null){
                     <small id="userPatternPasswordHelpId" class="form-text text-muted">*Required</small>
                 </div>
               <%}; %>
+               
+  <!-- Hidden Form Fields -->             
+               
+                <input type="hidden" id="randomGrid" name="randomGrid" value='<%=randomPatternGridJSON%>'>
+               
                
                
                
