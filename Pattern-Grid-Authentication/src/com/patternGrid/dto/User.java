@@ -3,19 +3,20 @@ package com.patternGrid.dto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "user_table")
 public class User {
-	
-	
+
 	@Id
-	@Column(name="User_Id")
+	@Column(name = "User_Id")
 	String userId;
-	
-	@Column(name="User_Email")
+
+	@Column(name = "User_Email")
 	String userEmail;
-	
-	@Column(name="User_Pattern_Password")
+
+	@Column(name = "User_Pattern_Password")
 	String userPatternPassword;
 
 	public User() {

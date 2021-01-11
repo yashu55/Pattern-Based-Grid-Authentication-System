@@ -1,3 +1,14 @@
+  <%--  <%@ page import="java.net.*" %>
+   
+   <%
+   URL url = new URL(request.getRequestURL().toString());
+   
+   String _Path = url.getPath(); 
+   
+   
+   %>
+    --%>
+   
     <!-- navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#">
@@ -16,17 +27,16 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
+          <li class="nav-item ">
             <a class="nav-link" href="#"
-              >Login<span class="sr-only">(current)</span></a
-            >
+              >Login<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Register</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">About</a>
-          </li>
+          </li>  
         </ul>
       </div>
     </nav>

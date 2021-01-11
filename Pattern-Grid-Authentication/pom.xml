@@ -30,8 +30,9 @@
    <properties>
   	<spring.version>4.3.20.RELEASE</spring.version>
   	<aspectj.version>1.8.13</aspectj.version>
-  	<mysql.connector.java.version>8.0.16</mysql.connector.java.version>
   	<hibernate.version>4.3.0.Final</hibernate.version>
+  	<postgresql.version>42.2.15</postgresql.version>
+  	<mysql.connector.java.version>8.0.16</mysql.connector.java.version>
   </properties>
   <dependencies>
   
@@ -94,21 +95,6 @@
 		<artifactId>aspectjweaver</artifactId>
 		<version>${aspectj.version}</version>
 	</dependency>
-	
-<dependency>
-    <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
-    <version>${mysql.connector.java.version}</version>
-</dependency>
-
-	
-	
-	
-	
-	
-	
-	
-	
   	<dependency>
   		<groupId>org.hibernate</groupId>
   		<artifactId>hibernate-core</artifactId>
@@ -124,6 +110,19 @@
     	<artifactId>hibernate-ehcache</artifactId>
     	<version>${hibernate.version}</version>
 	</dependency>
+	
+	<dependency>
+	<groupId>org.postgresql</groupId>
+		<artifactId>postgresql</artifactId>
+		<version>${postgresql.version}</version>
+	</dependency>
+			
+	<dependency>
+    <groupId>mysql</groupId>
+   	 	 <artifactId>mysql-connector-java</artifactId>
+   		 <version>${mysql.connector.java.version}</version>
+	</dependency> 
+		
   </dependencies>
   
   
