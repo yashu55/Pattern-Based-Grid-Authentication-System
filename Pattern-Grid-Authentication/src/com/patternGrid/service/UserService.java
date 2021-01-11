@@ -7,4 +7,5 @@ public interface UserService {
 
 	boolean isUserValid(User user);
 
+	User getUser(User user);
 }

@@ -3,21 +3,35 @@ package com.patternGrid.dto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "user_table")
+@Table(name = "User_Table")
 public class User {
 
 	@Id
 	@Column(name = "User_Id")
-	String userId;
+	private String userId;
 
 	@Column(name = "User_Email")
-	String userEmail;
+	private String userEmail;
 
 	@Column(name = "User_Pattern_Password")
-	String userPatternPassword;
+	private String userPatternPassword;
+
+	@ManyToOne
+	@JoinColumn(name = "Pattern_Type_Id")
+	private PatternType patternType;
+
+	public PatternType getPatternType() {
+		return patternType;
+	}
+
+	public void setPatternType(PatternType patternType) {
+		this.patternType = patternType;
+	}
 
 	public User() {
 		super();
@@ -58,7 +72,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userEmail=" + userEmail + ", userPatternPassword=" + userPatternPassword
-				+ "]";
+				+ ", patternType=" + patternType + "]";
 	}
 
 }

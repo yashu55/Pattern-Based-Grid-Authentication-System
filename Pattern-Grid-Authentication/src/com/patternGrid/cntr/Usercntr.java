@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,12 @@ public class Usercntr {
 	@Autowired
 	UserService userService;
 
+	public static String encodePassword(String password) {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String hashedPassword = passwordEncoder.encode(password);
+		return hashedPassword;
+	}
+
 	public static void checkSessionTeacher(HttpSession hs, HttpServletResponse r) throws IOException {
 		String sessionUserId = (String) hs.getAttribute("sessionUserId");
 		// String sessionUserEmail = (String) hs.getAttribute("sessionUserEmail");
@@ -38,21 +45,18 @@ public class Usercntr {
 	@RequestMapping("/")
 	public String main(HttpSession session) {
 		session.setAttribute("loginValue", false);
-
 		return "login";
 	}
 
 	@RequestMapping(value = "/about")
 	public String About(HttpSession session) {
 		session.setAttribute("loginValue", false);
-
 		return "about";
 	}
 
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index(HttpSession session) {
 		session.setAttribute("loginValue", false);
-
 		return "login";
 	}
 
@@ -66,7 +70,6 @@ public class Usercntr {
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String prepareUserRegister(HttpSession session) {
 		session.setAttribute("loginValue", false);
-
 		return "register";
 	}
 
@@ -74,7 +77,7 @@ public class Usercntr {
 	public String submitUserRegister(HttpSession session, HttpServletRequest req, HttpServletResponse res, User user)
 			throws IOException {
 		session.setAttribute("loginValue", false);
-
+		user.setUserPatternPassword(encodePassword(user.getUserPatternPassword()));
 		boolean isSuccessfulRegister = userService.registerUser(user);
 		if (isSuccessfulRegister)
 			res.sendRedirect("register?msg=successful");
@@ -95,8 +98,14 @@ public class Usercntr {
 
 		if (!(Boolean) session.getAttribute("loginValue")) {
 			// check username if exists-
-			int row = 4;
-			int col = 4;
+			user = userService.getUser(user);
+			if (user == null) {
+				res.sendRedirect("login?msg=invalid");
+				return null;
+			}
+
+			int row = user.getPatternType().getPatternRowSize();
+			int col = user.getPatternType().getPatternColSize();
 			String[][] randomPatternGrid = RandomGridGenerator.randomizor(row, col, 2);
 
 			map.put("randomPatternGrid", randomPatternGrid);
@@ -107,6 +116,7 @@ public class Usercntr {
 			return "login";
 
 		} else if ((Boolean) session.getAttribute("loginValue")) {
+			session.setAttribute("loginValue", false);
 
 			String[] key = user.getUserPatternPassword().split("(?<=\\G.{2})");
 			System.out.println(Arrays.toString(key));
@@ -150,9 +160,10 @@ public class Usercntr {
 				// session.setAttribute("sessionUserEmail", user.getUserEmail());
 				res.sendRedirect("home");
 				System.out.println("sessionID" + session.getId());
-			} else
+			} else {
 				res.sendRedirect("login?msg=invalid");
-			return null;
+				return null;
+			}
 		}
 
 		return null;

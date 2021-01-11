@@ -11,19 +11,23 @@ public class UserServiceImple implements UserService {
 
 	@Autowired
 	UserDao userDao;
-	
-	
+
 	@Override
 	public boolean registerUser(User user) {
 		// TODO Auto-generated method stub
 		return userDao.registerUser(user);
 	}
 
-
 	@Override
 	public boolean isUserValid(User user) {
 		// TODO Auto-generated method stub
 		return userDao.isUserValid(user);
+	}
+
+	@Override
+	public User getUser(User user) {
+		// TODO Auto-generated method stub
+		return userDao.getUser(user);
 	}
 
 }

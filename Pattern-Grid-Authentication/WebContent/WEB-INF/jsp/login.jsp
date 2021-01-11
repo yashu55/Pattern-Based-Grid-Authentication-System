@@ -82,7 +82,7 @@ if(randomPatternGrid != null){
                 <p>Pattern Grid</p>
                  <div class="row d-flex justify-content-center" >
                    <div class="col d-flex justify-content-center align-items-center" style="height:250px;">
-                  <svg  version="1.1" height="100%" viewBox="0 0 <%=row*100 %> <%=col*100 %>">
+                  <svg  version="1.1" height="100%" viewBox="0 0 <%=col*100 %> <%=row*100 %>">
                    
                    
                    <% for(int i=0; i <  row; i++){	
