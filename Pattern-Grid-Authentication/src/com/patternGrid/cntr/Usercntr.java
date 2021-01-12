@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -40,6 +42,9 @@ public class Usercntr {
 
 	@Autowired
 	LoginTransactionDao loginTransactionDao;
+
+	@Autowired
+	private MailSender mailSender;
 
 	public static String encodePassword(String password) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -346,6 +351,45 @@ public class Usercntr {
 		else
 			res.sendRedirect("logout");
 		return null;
+	}
+
+	@RequestMapping("/forgotPattern")
+	public String forgotPattern(HttpSession hs, User user) {
+		hs.setAttribute("loginValue", false);
+		String sessionUserId = (String) hs.getAttribute("sessionUserId");
+		if (sessionUserId != null)
+			return "home";
+		return "forgotPattern";
+	}
+
+	@RequestMapping(value = "/forgotPattern", method = RequestMethod.POST)
+	public String requestOTP(HttpSession hs, User user) {
+		hs.setAttribute("loginValue", false);
+		String sessionUserId = (String) hs.getAttribute("sessionUserId");
+		if (sessionUserId != null)
+			return "home";
+
+		user = userService.getUser(user);
+		String OTP = RandomGridGenerator.getRandomOTP();
+
+		hs.setAttribute("OTP", OTP);
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setFrom("cdacmumbai3@gmail.com");
+		message.setTo(user.getUserEmail());
+		message.setSubject("Reset Pattern OTP");
+		message.setText("Your OTP is:-  " + OTP);
+		mailSender.send(message);
+
+		return "resetForgotPattern";
+	}
+
+	@RequestMapping("/resetForgotPattern")
+	public String resetForgotPattern(HttpSession hs, User user) {
+		hs.setAttribute("loginValue", false);
+		String sessionUserId = (String) hs.getAttribute("sessionUserId");
+		if (sessionUserId != null)
+			return "home";
+		return "resetForgotPattern";
 	}
 
 }

@@ -1,3 +1,8 @@
+<%@page import="com.google.gson.Gson"%>
+<%@page
+	import="org.springframework.http.converter.json.GsonBuilderUtils"%>
+<%@page import="com.patternGrid.dto.User"%>
+<%@page import="java.util.Map"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -14,7 +19,7 @@
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
-<title>Home</title>
+<title>Forgot Pattern</title>
 </head>
 <body class="bg-light">
 	<!-- NavBar -->
@@ -23,13 +28,24 @@
 		<div class="row justify-content-around">
 			<!--Login Page -->
 			<div class="col-lg-6 bg-light shadow px-4 pt-4">
-				<h4 class="display-4 ">
-					<i class="fa fa-house-user "></i> Welcome,
-					<%=(String) session.getAttribute("sessionUserId")%>
-					!!
-				</h4>
-				<p class="text-secondary"></p>
+				<h2>
+					<i class="fa fa-fa-key"></i> Forgot Pattern
+				</h2>
 				<hr>
+				<!--Reset form -->
+				<form class="" method="post" action="">
+					<div class="form-group">
+						<label for="userId">User Id</label> 
+						<input type="userId"
+							class="form-control" name="userId" id="userId"
+							aria-describedby="userIdHelpId" placeholder="Enter User Id"
+							required>
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary">Generate
+							OTP</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>

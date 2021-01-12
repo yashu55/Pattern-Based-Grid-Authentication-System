@@ -11,24 +11,28 @@
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
 
 
-	 <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
-		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" ></property>
-		<property name="url" value="jdbc:mysql://localhost:3306/patternGrid?useSSL=false" ></property>
-		<property name="username" value="root" ></property>
-		<property name="password" value="Manimau@11" ></property>
-	</bean> 
-	
-	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
-		<property name="driverClassName" value="org.postgresql.Driver" ></property>
-		<property name="url" value="jdbc:postgresql://localhost:5432/patterngrid" ></property>
-		<property name="username" value="postgres" ></property>
-		<property name="password" value="root" ></property>
-	</bean> -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="com.mysql.cj.jdbc.Driver"></property>
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/patternGrid?useSSL=false"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="Manimau@11"></property>
+	</bean>
+
+	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" 
+		> <property name="driverClassName" value="org.postgresql.Driver" ></property> 
+		<property name="url" value="jdbc:postgresql://localhost:5432/patterngrid" 
+		></property> <property name="username" value="postgres" ></property> <property 
+		name="password" value="root" ></property> </bean> -->
 
 
 
 
-<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" autowire="byName" >
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
+		autowire="byName">
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
@@ -37,30 +41,50 @@
 			</props>
 		</property>
 		<property name="annotatedClasses">
-			<list>	
-				 <value>com.patternGrid.dto.User</value>
- 				 <value>com.patternGrid.dto.PatternType</value>
- 				 <value>com.patternGrid.dto.Config</value>
- 				 <value>com.patternGrid.dto.LoginTransaction</value>
-				 
+			<list>
+				<value>com.patternGrid.dto.User</value>
+				<value>com.patternGrid.dto.PatternType</value>
+				<value>com.patternGrid.dto.Config</value>
+				<value>com.patternGrid.dto.LoginTransaction</value>
+
 			</list>
 		</property>
 	</bean>
-	
-	
-	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate" autowire="byType" ></bean>
-	
-	<context:component-scan base-package="com.patternGrid"></context:component-scan>
-	
-	 <bean class = "org.springframework.web.servlet.view.InternalResourceViewResolver">
-      <property name = "prefix" value = "/WEB-INF/jsp/" />
-      <property name = "suffix" value = ".jsp" />
-   </bean>
 
- <mvc:resources mapping="/resources/**" location="/resources/"
-    cache-period="31556926"/>
- 
- <mvc:annotation-driven />
+
+	<bean id="hibernateTemplate"
+		class="org.springframework.orm.hibernate4.HibernateTemplate"
+		autowire="byType"></bean>
+
+	<context:component-scan
+		base-package="com.patternGrid"></context:component-scan>
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<mvc:resources mapping="/resources/**"
+		location="/resources/" cache-period="31556926" />
+
+	<mvc:annotation-driven />
+
+
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">  
+  		<property name="host" value="smtp.gmail.com" />  
+    	<property name="username" value="ysp551996@gmail.com" />  
+    	<property name="password" value="" />  
+    	<property name="javaMailProperties">  
+       		<props>  
+              	<prop key="mail.smtp.auth">true</prop>  
+              	<prop key="mail.smtp.socketFactory.port">465</prop>  
+              	<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>  
+              	<prop key="mail.smtp.port">465</prop>  
+        	</props>  
+    	</property>  
+	</bean>
+
 
 
 </beans>
