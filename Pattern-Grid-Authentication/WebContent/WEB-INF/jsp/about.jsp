@@ -28,10 +28,7 @@
             <h4 class="display-4 ">
                 <i class="fa fa-info-circle "></i> About</h4>
             <p class="text-secondary">About page</p>
-            <hr>
-           
-                    
-             
+            <hr>           
         </div>
     </div>
 </div>

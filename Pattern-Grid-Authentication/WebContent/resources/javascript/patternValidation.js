@@ -4,8 +4,8 @@
       function changeDefaults() {
         // margin: 15.77 + window.innerWidth * 0.003846,
         // radius: 6.677 + window.innerWidth * 0.016667,
-        lock.option("margin", 15.77 + window.innerWidth * 0.003846);
-        lock.option("radius", 6.677 + window.innerWidth * 0.016667);
+        lock.option("margin", 15 + window.innerWidth * 0.003);
+        lock.option("radius", 6 + window.innerWidth * 0.015);
         lock._render();
       }
 

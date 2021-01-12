@@ -22,8 +22,18 @@
 
 
 
- HOMEEEEEEEEEEEEE  
-    
+<div class="container-fluid my-4 ">
+    <div class="row justify-content-around">
+        <!--Login Page -->
+        <div class="col-lg-6 bg-light shadow px-4 pt-4">
+            <h4 class="display-4 ">
+            <i class="fa fa-house-user "></i> Welcome, <%=(String)session.getAttribute("sessionUserId") %> !!</h4>         
+            <p class="text-secondary"></p>
+            <hr>           
+        </div>
+    </div>
+</div>
+        
 
 
 

@@ -8,4 +8,6 @@ public interface UserDao {
 	boolean isUserValid(User user);
 
 	User getUser(User user);
+
+	boolean resetPattern(User user);
 }

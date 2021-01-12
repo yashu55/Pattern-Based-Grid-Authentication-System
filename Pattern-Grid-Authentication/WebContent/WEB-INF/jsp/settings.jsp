@@ -1,8 +1,14 @@
+<%@page import="com.patternGrid.dto.User"%>
 <%@page import="com.patternGrid.dto.PatternType"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<% PatternType defaultPatternType =(PatternType) request.getAttribute("defaultPatternType"); %>    
+ 
+    
+<%
+	PatternType defaultPatternType =(PatternType) request.getAttribute("defaultPatternType");
+	User userDetails = (User) request.getAttribute("userDetails");
+%>    
     
     
 <!DOCTYPE html>
@@ -18,7 +24,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
     
  	 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/patternlock.css" />   
-   <title>Register</title>
+   <title>Settings</title>
   
     
     
@@ -37,21 +43,20 @@
         <!--Login Page -->
         <div class="col-md-7 bg-light shadow px-4 pt-4">
             <h4 class="display-4 ">
-                <i class="fa fa-user-plus"></i> Register</h4>
-            <p class="text-secondary">Enter login details.</p>
+                <i class="fa fa-cogs"></i> Settings</h4>
+            <p class="text-secondary"></p>
             <hr>
             <!--Register form -->
-            <form class="" method="post" action="register">
+            <form class="" method="post" action="reset">
                 <div class="form-group">
                     <label for="userId">User Id</label>
                     <input type="userId" class="form-control" name="userId" id="userId" aria-describedby="userIdHelpId"
-                        placeholder="Enter User Id" required>
-                    <small id="userIdHelpId" class="form-text text-muted">*Required</small>
+                        placeholder="Enter User Id" value="<%=userDetails.getUserId()%>" disabled required>
                 </div>
                 <div class="form-group">
                     <label for="userEmail">Email address</label>
-                    <input type="email" class="form-control" id="userEmail" name="userEmail" aria-describedby="userEmailHelp" placeholder="Enter email">
-                    <small id="userEmailHelp" class="form-text text-muted">*Required</small>
+                    <input type="email" class="form-control" id="userEmail" name="userEmail" 
+                    aria-describedby="userEmailHelp" placeholder="Enter email" value="<%=userDetails.getUserEmail()%>" disabled required>
                   </div>
                  <div class="container-fluid m-0 p-0">
               <div class="row d-flex justify-content-center">
@@ -98,7 +103,7 @@
             </div>
             <div class="form-group">
               <button type="submit" id="registerBtn" class="btn btn-success" disabled>
-                Register
+                Reset Pattern
               </button>
             </div>                 
             </form>

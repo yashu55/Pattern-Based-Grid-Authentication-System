@@ -81,22 +81,49 @@ public class UserDaoImple implements UserDao {
 
 			@Override
 			public User doInHibernate(Session session) throws HibernateException {
-
-				Transaction tr = session.beginTransaction();
-				Query q = session.createQuery("from User where userId = ?");
-				q.setString(0, user.getUserId());
-				List<User> li = q.list();
-				if (li == null)
-					return null;
-				else {
-					user.setPatternType(li.get(0).getPatternType());
-					user.setUserEmail((li.get(0).getUserEmail()));
-					tr.commit();
-					session.flush();
-					session.close();
+				try {
+					Transaction tr = session.beginTransaction();
+					Query q = session.createQuery("from User where userId = ?");
+					if (user.getUserId() != null)
+						q.setString(0, user.getUserId());
+					List<User> li = q.list();
+					if (li == null)
+						return null;
+					else {
+						user.setPatternType(li.get(0).getPatternType());
+						user.setUserEmail((li.get(0).getUserEmail()));
+						tr.commit();
+						session.flush();
+						session.close();
+					}
+				} catch (Exception e) {
+					System.out.println("user");
 				}
 				return user;
 			}
 		});
+	}
+
+	@Override
+	public boolean resetPattern(User user) {
+
+		try {
+			return ht.execute(new HibernateCallback<Boolean>() {
+
+				@Override
+				public Boolean doInHibernate(Session session) throws HibernateException {
+
+					Transaction tr = session.beginTransaction();
+					session.update(user);
+					tr.commit();
+					session.flush();
+					session.close();
+					return true;
+				}
+			});
+		} catch (Exception e) {
+			System.out.println("Error in saving!!!");
+			return false;
+		}
 	}
 }

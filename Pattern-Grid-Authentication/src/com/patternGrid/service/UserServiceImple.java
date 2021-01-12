@@ -30,4 +30,10 @@ public class UserServiceImple implements UserService {
 		return userDao.getUser(user);
 	}
 
+	@Override
+	public boolean resetPattern(User user) {
+		// TODO Auto-generated method stub
+		return userDao.resetPattern(user);
+	}
+
 }

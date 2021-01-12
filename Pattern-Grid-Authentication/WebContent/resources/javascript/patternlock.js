@@ -626,8 +626,8 @@
 
   PatternLock.defaults = {
     matrix: [3, 3],
-    margin: 15.77 + window.innerWidth * 0.003846,
-    radius: 6.677 + window.innerWidth * 0.016667,
+    margin: 15 + window.innerWidth * 0.003,
+    radius: 6 + window.innerWidth * 0.015,
     patternVisible: true,
     lineOnMove: true,
     delimiter: ',', // a delimiter between the pattern

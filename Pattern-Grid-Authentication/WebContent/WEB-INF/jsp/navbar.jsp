@@ -21,12 +21,19 @@
           <%if(session.getAttribute("sessionUserId") == null) {%>
           <li class="nav-item ">
             <a class="nav-link" href="login"
-              >Login<span class="sr-only">(current)</span></a>
+              >Login</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="register">Register</a>
           </li>
-          <%}; %>		
+          <%}else{ %>
+          <li class="nav-item">
+            <a class="nav-link" href="home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="settings">Settings</a>
+          </li>
+          <%} %>		
           <li class="nav-item">
             <a class="nav-link" href="about">About</a>
           </li>  

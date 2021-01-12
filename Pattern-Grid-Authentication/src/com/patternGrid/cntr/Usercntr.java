@@ -21,6 +21,7 @@ import com.patternGrid.dao.LoginTransactionDao;
 import com.patternGrid.dao.PatternTypeDao;
 import com.patternGrid.dto.Config;
 import com.patternGrid.dto.LoginTransaction;
+import com.patternGrid.dto.PatternType;
 import com.patternGrid.dto.User;
 import com.patternGrid.randomization.RandomGridGenerator;
 import com.patternGrid.service.UserService;
@@ -46,13 +47,15 @@ public class Usercntr {
 		return hashedPassword;
 	}
 
-	public static void checkSession(HttpSession hs, HttpServletResponse r) throws IOException {
+	public static boolean checkSession(HttpSession hs, HttpServletResponse r) throws IOException {
 		String sessionUserId = (String) hs.getAttribute("sessionUserId");
 		// String sessionUserEmail = (String) hs.getAttribute("sessionUserEmail");
 		System.out.println(sessionUserId);
 		if (sessionUserId == null) {
 			r.sendRedirect("login");
+			return false;
 		}
+		return true;
 	}
 
 	@RequestMapping("/")
@@ -96,24 +99,65 @@ public class Usercntr {
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public String prepareUserRegister(HttpSession hs) {
+	public String prepareUserRegister(HttpSession hs, Config config, PatternType defaultPatternType, ModelMap map) {
 		hs.setAttribute("loginValue", false);
 		String sessionUserId = (String) hs.getAttribute("sessionUserId");
 		if (sessionUserId != null)
 			return "home";
+
+		config = configDao.getConfigDefaultPatternType("patternGridSize");
+		defaultPatternType = patternTypeDao.getPatternType(Integer.parseInt(config.getParamValue()));
+		map.put("defaultPatternType", defaultPatternType);
+
 		return "register";
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String submitUserRegister(HttpSession session, HttpServletRequest req, HttpServletResponse res, User user,
-			Config config) throws IOException {
+	public String submitUserRegister(PatternType defaultPatternType, HttpSession session, HttpServletRequest req,
+			HttpServletResponse res, User user, Config config) throws IOException {
 		session.setAttribute("loginValue", false);
-		user.setUserPatternPassword(encodePassword(user.getUserPatternPassword()));
-		// Adding default patternType according to set config
+		String sessionUserId = (String) session.getAttribute("sessionUserId");
+		if (sessionUserId != null)
+			return "home";
 
+		// Adding default patternType according to set config
 		config = configDao.getConfigDefaultPatternType("patternGridSize");
 		System.out.println(config);
-		user.setPatternType(patternTypeDao.getPatternType(Integer.parseInt(config.getParamValue())));
+		defaultPatternType = patternTypeDao.getPatternType(Integer.parseInt(config.getParamValue()));
+		user.setPatternType(defaultPatternType);
+		int defaultRows = defaultPatternType.getPatternRowSize();
+		int defaultCols = defaultPatternType.getPatternColSize();
+
+		// Parsing the submitted pattern
+		String pattern = user.getUserPatternPassword();
+		System.out.println(pattern);
+		String patternArr[] = pattern.split(",");
+		System.out.println(Arrays.toString(patternArr));
+		String actualPattern = "";
+		if (patternArr.length > (defaultRows * defaultCols)) {
+			res.sendRedirect("register?msg=unSuccessful");
+			return null;
+		}
+		for (int i = 0; i < patternArr.length; i++) {
+			int currentNumber = -1;
+			try {
+				currentNumber = Integer.parseInt(patternArr[i]);
+				if (currentNumber <= 0 || currentNumber > (defaultRows * defaultCols))
+					throw new Exception();
+			} catch (Exception e) {
+				res.sendRedirect("register?msg=unSuccessful");
+				return null;
+			}
+			currentNumber--;
+			Number first = currentNumber / defaultCols;
+			actualPattern += first.toString();
+			Number second = currentNumber % defaultCols;
+			actualPattern += second.toString();
+		}
+		System.out.println(actualPattern);
+
+		// Encoding Pattern Password
+		user.setUserPatternPassword(encodePassword(actualPattern));
 
 		boolean isSuccessfulRegister = userService.registerUser(user);
 		if (isSuccessfulRegister)
@@ -223,8 +267,85 @@ public class Usercntr {
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String home(HttpSession hs, HttpServletResponse r) throws IOException {
 		hs.setAttribute("loginValue", false);
-		checkSession(hs, r);
+		if (!checkSession(hs, r)) {
+			return null;
+		}
 		return "home";
+	}
+
+	@RequestMapping(value = "/settings", method = RequestMethod.GET)
+	public String settings(PatternType defaultPatternType, HttpSession session, HttpServletRequest req,
+			HttpServletResponse r, User user, Config config, ModelMap map) throws IOException {
+		session.setAttribute("loginValue", false);
+		if (!checkSession(session, r)) {
+			return null;
+		}
+		user.setUserId((String) session.getAttribute("sessionUserId"));
+		user = userService.getUser(user);
+		config = configDao.getConfigDefaultPatternType("patternGridSize");
+		defaultPatternType = patternTypeDao.getPatternType(Integer.parseInt(config.getParamValue()));
+		map.put("defaultPatternType", defaultPatternType);
+		map.put("userDetails", user);
+		System.out.println(defaultPatternType);
+		System.out.println(user);
+		return "settings";
+	}
+
+	@RequestMapping(value = "/reset", method = RequestMethod.POST)
+	public String settingsResetPattern(PatternType defaultPatternType, HttpSession hs, HttpServletRequest req,
+			HttpServletResponse res, User user, Config config) throws IOException {
+		hs.setAttribute("loginValue", false);
+		if (!checkSession(hs, res)) {
+			return null;
+		}
+
+		user.setUserId((String) hs.getAttribute("sessionUserId"));
+		user = userService.getUser(user);
+		// Adding default patternType according to set config
+		config = configDao.getConfigDefaultPatternType("patternGridSize");
+		System.out.println(config);
+		defaultPatternType = patternTypeDao.getPatternType(Integer.parseInt(config.getParamValue()));
+		user.setPatternType(defaultPatternType);
+		int defaultRows = defaultPatternType.getPatternRowSize();
+		int defaultCols = defaultPatternType.getPatternColSize();
+
+		// Parsing the submitted pattern
+		String pattern = user.getUserPatternPassword();
+		System.out.println(pattern);
+		String patternArr[] = pattern.split(",");
+		System.out.println(Arrays.toString(patternArr));
+		String actualPattern = "";
+		if (patternArr.length > (defaultRows * defaultCols)) {
+			res.sendRedirect("logout");
+			return null;
+		}
+		for (int i = 0; i < patternArr.length; i++) {
+			int currentNumber = -1;
+			try {
+				currentNumber = Integer.parseInt(patternArr[i]);
+				if (currentNumber <= 0 || currentNumber > (defaultRows * defaultCols))
+					throw new Exception();
+			} catch (Exception e) {
+				res.sendRedirect("logout");
+				return null;
+			}
+			currentNumber--;
+			Number first = currentNumber / defaultCols;
+			actualPattern += first.toString();
+			Number second = currentNumber % defaultCols;
+			actualPattern += second.toString();
+		}
+		System.out.println(actualPattern);
+
+		// Encoding Pattern Password
+		user.setUserPatternPassword(encodePassword(actualPattern));
+
+		boolean isSuccessfulRegister = userService.resetPattern(user);
+		if (isSuccessfulRegister)
+			res.sendRedirect("home?msg=Resetsuccessful");
+		else
+			res.sendRedirect("logout");
+		return null;
 	}
 
 }
