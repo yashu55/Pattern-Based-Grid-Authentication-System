@@ -12,7 +12,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
-    <title>Register</title>
+    
+ 	 <link rel="stylesheet" href="patternlock.css" />   
+   <title>Register</title>
+    
+    
+    
 </head>
 
 <body class="bg-light">
@@ -47,16 +52,61 @@
                     <small id="userEmailHelp" class="form-text text-muted">*Required</small>
                   </div>
 
-                <div class="form-group">
-                    <label for="pwd">Pattern Password</label>
-                    <input type="password" class="form-control" name="userPatternPassword" id="userPatternPassword" placeholder="Pattern Password"
-                         required>
-                    <small id="userPatternPasswordHelpId" class="form-text text-muted">*Required</small>
+                 <div class="container-fluid m-0 p-0">
+              <div class="row d-flex justify-content-center">
+                <h4 id="notification">Draw New Pattern</h4>
+              </div>
+              <div class="row d-flex justify-content-center">
+                <button
+                type="button"
+                name="mySaveBtn"
+                id="mySaveBtn"
+                onclick="mySaveFunction()"
+                class="btn btn-sm btn-primary my-2 m-1"
+              >
+                Save Pattern
+              </button>
+              </div>
+             
+              <div class="row d-flex justify-content-center">
+                <div
+                  class="col d-flex justify-content-center align-items-center"
+                >
+                  <!-- Pattern Div   -->
+                  <div id="patternHolder"></div>
                 </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-success">Register</button>
-                    <button type="reset" class="btn btn-danger">Reset</button>
-                </div>
+              </div>
+              <div class="row d-flex justify-content-center">
+                <button
+                type="button"
+                name="myResetBtn"
+                id="myResetBtn"
+                onclick="myResetFunction()"
+                class="btn btn-danger btn-sm m-1"
+              >
+               Reset
+              </button>  
+            </div>
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                name="userPatternPassword"
+                id="userPatternPassword"
+                hidden  
+              />
+             
+            </div>
+            <div class="form-group">
+              <button type="submit" id="registerBtn" class="btn btn-success" disabled>
+                Register
+              </button>
+            </div>
+               
+               
+               
+               
+               
             </form>
         </div>
     </div>
@@ -76,6 +126,12 @@
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+ <script src="javascript/patternlock.js"></script>
+ <script>let lock = new PatternLock("#patternHolder", { matrix: [4, 4] });
+</script>
+  <script src="javascript/patternValidation.js"></script>
+ 
 </body>
 
 </html>

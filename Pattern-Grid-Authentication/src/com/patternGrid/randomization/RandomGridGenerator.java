@@ -6,9 +6,9 @@ public class RandomGridGenerator {
 
 	private static char[] alphaNumericCharArray = {
 
-			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
-			'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-			'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
+			'X', 'e', 'T', 'U', 'K', 'Y', 'f', 'g', 's', 't', 'u', 'A', 'B', 'i', '7', '8', '9', '0', 'j', 'k', 'l',
+			'C', 'D', 'V', 'c', 'Q', 'R', 'S', 'h', 'v', 'w', 'x', 'y', 'z', 'm', 'n', 'o', 'p', 'q', 'r', 'W', '4',
+			'5', 'H', 'I', 'J', 'E', 'F', 'G', 'd', 'L', 'M', 'N', 'O', 'P', '1', '2', '3', 'a', 'b', 'Z', '6' };
 
 	private static boolean checkIfString(String[] randomString, String value, int currentSize) {
 		for (int i = 0; i < currentSize; i++) {

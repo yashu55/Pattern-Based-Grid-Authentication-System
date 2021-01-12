@@ -46,7 +46,7 @@ if(randomPatternGrid != null){
 %>
 
 
- <!-- Teacher Login Form -->
+ <!--  Login Form -->
    <div class="container-fluid my-4 ">
     <div class="row justify-content-around">
         <!--Login Page -->
