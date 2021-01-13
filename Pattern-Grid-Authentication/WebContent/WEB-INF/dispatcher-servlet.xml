@@ -46,7 +46,6 @@
 				<value>com.patternGrid.dto.PatternType</value>
 				<value>com.patternGrid.dto.Config</value>
 				<value>com.patternGrid.dto.LoginTransaction</value>
-
 			</list>
 		</property>
 	</bean>
@@ -58,7 +57,6 @@
 
 	<context:component-scan
 		base-package="com.patternGrid"></context:component-scan>
-
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsp/" />
@@ -74,7 +72,7 @@
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">  
   		<property name="host" value="smtp.gmail.com" />  
     	<property name="username" value="ysp551996@gmail.com" />  
-    	<property name="password" value="Manimau@54321" />  
+    	<property name="password" value="" />  
     	<property name="javaMailProperties">  
        		<props>  
               	<prop key="mail.smtp.auth">true</prop>  
