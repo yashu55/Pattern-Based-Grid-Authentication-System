@@ -291,8 +291,7 @@ public class Usercntr {
 		defaultPatternType = patternTypeDao.getPatternType(Integer.parseInt(config.getParamValue()));
 		map.put("defaultPatternType", defaultPatternType);
 		map.put("userDetails", user);
-		System.out.println(defaultPatternType);
-		System.out.println(user);
+
 		return "settings";
 	}
 
@@ -363,33 +362,109 @@ public class Usercntr {
 	}
 
 	@RequestMapping(value = "/forgotPattern", method = RequestMethod.POST)
-	public String requestOTP(HttpSession hs, User user) {
+	public String requestOTP(HttpSession hs, User user, HttpServletResponse r, HttpServletRequest req)
+			throws IOException {
 		hs.setAttribute("loginValue", false);
 		String sessionUserId = (String) hs.getAttribute("sessionUserId");
 		if (sessionUserId != null)
 			return "home";
 
-		user = userService.getUser(user);
-		String OTP = RandomGridGenerator.getRandomOTP();
+		try {
+			user = userService.getUser(user);
+			String OTP = RandomGridGenerator.getRandomOTP();
 
-		hs.setAttribute("OTP", OTP);
-		SimpleMailMessage message = new SimpleMailMessage();
-		message.setFrom("cdacmumbai3@gmail.com");
-		message.setTo(user.getUserEmail());
-		message.setSubject("Reset Pattern OTP");
-		message.setText("Your OTP is:-  " + OTP);
-		mailSender.send(message);
+			hs.setAttribute("OTP", OTP);
+			hs.setAttribute("OTPUser", user);
+
+			SimpleMailMessage message = new SimpleMailMessage();
+			message.setFrom("cdacmumbai3@gmail.com");
+			message.setTo(user.getUserEmail());
+			message.setSubject("Reset Pattern OTP");
+			message.setText("Your OTP is:-  " + OTP);
+			mailSender.send(message);
+			r.sendRedirect("resetForgotPattern");
+
+		} catch (Exception e) {
+			r.sendRedirect("login");
+		}
+		return null;
+	}
+
+	@RequestMapping("/resetForgotPattern")
+	public String resetForgotPattern(PatternType defaultPatternType, HttpSession session, HttpServletRequest req,
+			HttpServletResponse r, User user, Config config, ModelMap map) {
+		session.setAttribute("loginValue", false);
+		String sessionUserId = (String) session.getAttribute("sessionUserId");
+		if (sessionUserId != null)
+			return "home";
+		user = (User) session.getAttribute("OTPUser");
+		user = userService.getUser(user);
+		config = configDao.getConfigDefaultPatternType("patternGridSize");
+		defaultPatternType = patternTypeDao.getPatternType(Integer.parseInt(config.getParamValue()));
+		map.put("defaultPatternType", defaultPatternType);
+		map.put("userDetails", user);
 
 		return "resetForgotPattern";
 	}
 
-	@RequestMapping("/resetForgotPattern")
-	public String resetForgotPattern(HttpSession hs, User user) {
+	@RequestMapping(value = "/resetForgotPattern", method = RequestMethod.POST)
+	public String resetForgotPattern(@RequestParam String otp, PatternType defaultPatternType, HttpSession hs,
+			HttpServletRequest req, HttpServletResponse res, User user, Config config) throws IOException {
 		hs.setAttribute("loginValue", false);
 		String sessionUserId = (String) hs.getAttribute("sessionUserId");
 		if (sessionUserId != null)
 			return "home";
-		return "resetForgotPattern";
+		String actualOTP = (String) hs.getAttribute("OTP");
+
+		if (!actualOTP.equals(otp)) {
+			res.sendRedirect("forgotPattern?error=wrongOTP");
+			return null;
+		}
+		// Adding default patternType according to set config
+		config = configDao.getConfigDefaultPatternType("patternGridSize");
+		System.out.println(config);
+		defaultPatternType = patternTypeDao.getPatternType(Integer.parseInt(config.getParamValue()));
+		user.setPatternType(defaultPatternType);
+		int defaultRows = defaultPatternType.getPatternRowSize();
+		int defaultCols = defaultPatternType.getPatternColSize();
+
+		// Parsing the submitted pattern
+		String pattern = user.getUserPatternPassword();
+		System.out.println(pattern);
+		String patternArr[] = pattern.split(",");
+		System.out.println(Arrays.toString(patternArr));
+		String actualPattern = "";
+		if (patternArr.length > (defaultRows * defaultCols)) {
+			res.sendRedirect("logout");
+			return null;
+		}
+		for (int i = 0; i < patternArr.length; i++) {
+			int currentNumber = -1;
+			try {
+				currentNumber = Integer.parseInt(patternArr[i]);
+				if (currentNumber <= 0 || currentNumber > (defaultRows * defaultCols))
+					throw new Exception();
+			} catch (Exception e) {
+				res.sendRedirect("logout");
+				return null;
+			}
+			currentNumber--;
+			Number first = currentNumber / defaultCols;
+			actualPattern += first.toString();
+			Number second = currentNumber % defaultCols;
+			actualPattern += second.toString();
+		}
+		System.out.println(actualPattern);
+
+		// Encoding Pattern Password
+		user.setUserPatternPassword(encodePassword(actualPattern));
+
+		boolean isSuccessfulRegister = userService.resetPattern(user);
+		if (isSuccessfulRegister)
+			res.sendRedirect("login");
+		else
+			res.sendRedirect("logout");
+		return null;
 	}
 
 }

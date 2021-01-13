@@ -27,7 +27,7 @@
 	<!-- NavBar -->
 	<jsp:include page="navbar.jsp" />
 	<!-- Body -->
-	<!--Register Form -->
+	<!--Reset Form -->
 	<div class="container-fluid my-4 ">
 		<div class="row justify-content-around">
 			<!--Login Page -->
@@ -37,10 +37,10 @@
 				</h4>
 				<p class="text-secondary"></p>
 				<hr>
-				<!--Register form -->
+				<!--Reset form -->
 				<form class="" method="post" action="reset">
 					<div class="form-group">
-						<label for="userId">User Id</label> <input type="userId"
+						<label for="userId">User Id</label> <input type="text"
 							class="form-control" name="userId" id="userId"
 							aria-describedby="userIdHelpId" placeholder="Enter User Id"
 							value="<%=userDetails.getUserId()%>" disabled required>
