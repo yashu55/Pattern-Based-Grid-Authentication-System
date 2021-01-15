@@ -412,6 +412,9 @@ public class Usercntr {
 			HttpServletRequest req, HttpServletResponse res, User user, Config config) throws IOException {
 		hs.setAttribute("loginValue", false);
 		String sessionUserId = (String) hs.getAttribute("sessionUserId");
+		User user2 = (User) hs.getAttribute("OTPUser");
+		user.setUserId(user2.getUserId());
+		user.setUserEmail(user2.getUserEmail());
 		if (sessionUserId != null)
 			return "home";
 		String actualOTP = (String) hs.getAttribute("OTP");
@@ -428,6 +431,7 @@ public class Usercntr {
 		int defaultRows = defaultPatternType.getPatternRowSize();
 		int defaultCols = defaultPatternType.getPatternColSize();
 
+		System.out.println(user + " " + user2 + "Hellloooooooo");
 		// Parsing the submitted pattern
 		String pattern = user.getUserPatternPassword();
 		System.out.println(pattern);

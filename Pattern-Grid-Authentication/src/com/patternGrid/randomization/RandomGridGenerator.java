@@ -52,7 +52,7 @@ public class RandomGridGenerator {
 	}
 
 	public static String getRandomOTP() {
-		String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz!#$%&*()[]?<>";
+		String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz";
 		StringBuilder salt = new StringBuilder();
 		Random rnd = new Random();
 		while (salt.length() < 6) { // length of the random string.
