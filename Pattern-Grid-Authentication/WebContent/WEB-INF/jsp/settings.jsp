@@ -55,12 +55,7 @@
 						<div class="row d-flex justify-content-center">
 							<h4 id="notification">Draw New Pattern</h4>
 						</div>
-						<div class="row d-flex justify-content-center">
-							<button type="button" name="mySaveBtn" id="mySaveBtn"
-								onclick="mySaveFunction()"
-								class="btn btn-sm btn-primary my-2 m-1">Save
-								Pattern</button>
-						</div>
+						
 						<div class="row d-flex justify-content-center">
 							<div class="col d-flex justify-content-center align-items-center">
 								<!-- Pattern Div   -->
@@ -68,17 +63,24 @@
 							</div>
 						</div>
 						<div class="row d-flex justify-content-center">
+							<button type="button" name="mySaveBtn" id="mySaveBtn"
+								onclick="mySaveFunction()"
+								class="btn btn-sm btn-primary my-2 m-1">Save
+								Pattern</button>
+						</div>
+						<div class="row d-flex justify-content-center">
 							<button type="button" name="myResetBtn" id="myResetBtn"
 								onclick="myResetFunction()" class="btn btn-danger btn-sm m-1">Reset</button>
 						</div>
 						<div class="form-group">
 							<input type="text" class="form-control"
-								name="userPatternPassword" id="userPatternPassword" hidden />
+								name="userPatternPassword" id="userPatternPassword" hidden="true" />
 						</div>
 						<div class="form-group">
 							<button type="submit" id="registerBtn" class="btn btn-success"
 								disabled>Reset Pattern</button>
 						</div>
+				</div>
 				</form>
 			</div>
 		</div>

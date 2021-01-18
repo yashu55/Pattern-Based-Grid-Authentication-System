@@ -125,6 +125,13 @@ public class Usercntr {
 		if (sessionUserId != null)
 			return "home";
 
+		User tempUser = userService.getUser(user);
+		System.out.println(tempUser + "tempuser!!");
+		if (tempUser != null) {
+			res.sendRedirect("register?msg=userIdExists");
+			return null;
+		}
+
 		// Adding default patternType according to set config
 		config = configDao.getConfigDefaultPatternType("patternGridSize");
 		System.out.println(config);
@@ -140,7 +147,7 @@ public class Usercntr {
 		System.out.println(Arrays.toString(patternArr));
 		String actualPattern = "";
 		if (patternArr.length > (defaultRows * defaultCols)) {
-			res.sendRedirect("register?msg=unSuccessful");
+			res.sendRedirect("register?msg=invalidPattern");
 			return null;
 		}
 		for (int i = 0; i < patternArr.length; i++) {
@@ -188,8 +195,9 @@ public class Usercntr {
 
 		if (!(Boolean) session.getAttribute("loginValue")) {
 			user = userService.getUser(user);
+			System.out.println(user);
 			if (user == null) {
-				res.sendRedirect("login?msg=invalid");
+				res.sendRedirect("login?msg=invalidUser");
 				return null;
 			}
 
@@ -231,7 +239,7 @@ public class Usercntr {
 						break;
 				}
 				if (flag != true) {
-					res.sendRedirect("login?msg=invalid");
+					res.sendRedirect("login?msg=invalidPattern");
 					return null;
 				} else {
 					actualPassword += i + "" + j;
@@ -261,7 +269,7 @@ public class Usercntr {
 				res.sendRedirect("home");
 				return null;
 			} else {
-				res.sendRedirect("login?msg=invalid");
+				res.sendRedirect("login?msg=invalidCredentials");
 				return null;
 			}
 		}

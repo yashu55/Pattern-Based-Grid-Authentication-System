@@ -51,19 +51,27 @@
 				<h4 class="display-4 ">
 					<i class="fa fa-sign-in-alt"></i> Login
 				</h4>
-				<p class="text-secondary">Enter login details.</p>
+				<p class="text-secondary">Enter login credentials.</p>
 				<hr>
+				<div id= "alertMsg" class="alert  alert-dismissible fade show"
+					role="alert">
+					
+					<button type="button" class="close" data-dismiss="alert"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
 				<!--Login form -->
-				<form method="post" action="login">
+				<form class="" method="post" action="login" id="loginForm">
 					<!-- User ID Logic -->
 					<div class="form-group">
-						<label for="userId">User Id</label> <input type="text"
+						<label for="userId">User Id<span style="color:red;">*</span></label> <input type="text"
 							class="form-control" name="userId" id="userId"
 							aria-describedby="userIdHelpId" placeholder="Enter User Id"
+							pattern="^[a-zA-Z][a-zA-Z0-9_]{3,25}$"
+							title="User Id should start with alphabet. It can be alphanumeric with 4-25 characters."
 							value="<%=userIdValue%>" required <%if (beforeRandomPattern) {%>
-							readonly <%}
-			;%>> <small id="userIdHelpId"
-							class="form-text text-muted">*Required</small>
+							readonly <%} ;%>>
 					</div>
 					<!-- Random Grid Logic -->
 					<%
@@ -76,7 +84,7 @@
 							int cy = 50;
 					%>
 					<div class="container-fluid m-0 p-0">
-						<p>Pattern Grid</p>
+						<h3 class="text-center">Pattern Grid</h3>
 						<div class="row d-flex justify-content-center">
 							<div class="col d-flex justify-content-center align-items-center"
 								style="height: 250px;">
@@ -104,8 +112,7 @@
 						</div>
 					</div>
 					<%
-						}
-						;
+						} ;
 					%>
 					<!-- Random Grid Logic End -->
 					<!--Pattern Password Logic -->
@@ -113,18 +120,28 @@
 						if (beforeRandomPattern) {
 					%>
 					<div class="form-group">
-						<label for="userPatternPassword">Pattern Password</label> <input
+					
+						<label for="userPatternPassword">Pattern Password<span style="color:red;">*</span></label> 
+												<div class="row d-flex justify-content-start ml-1" >
+						
+						<input
 							type="password" class="form-control" name="userPatternPassword"
-							id="userPatternPassword" placeholder="Pattern Password" required>
-						<small id="userPatternPasswordHelpId" class="form-text text-muted">*Required</small>
+							title="The pattern password should be entered using the random grid characters in a sequence in which the pattern was drawn."
+							id="userPatternPassword" placeholder="Pattern Password"
+							minlength="8" required>
+							 <i class=" far fa-eye" id="togglePassword" style="margin-left:-50px;
+							 margin-top:10px;
+							 cursor:pointer;"></i>
 					</div>
+					</div>
+					
+				
 					<%
-						}
-						;
+						} ;
 					%>
 					<!-- Hidden Form Fields -->
 					<input type="hidden" id="randomGrid" name="randomGrid"
-						value='<%=randomPatternGridJSON%>'>
+						value='<%=randomPatternGridJSON%>' required>
 					<!--Submit Btn Logic -->
 					<div class="form-group">
 						<%
@@ -136,14 +153,13 @@
 						%>
 						<button type="submit" class="btn btn-primary ">Submit</button>
 						<%
-							}
-							;
+							} ;
 						%>
 					</div>
 				</form>
 				<div>
-					<a class="text-primary " href="forgotPattern">Forgot Pattern?</a>
-					| <a class="text-primary " href="register">Register User</a> <br>
+					<a class="text-primary " href="forgotPattern">Forgot Pattern?</a> |
+					<a class="text-primary " href="register">Register User</a> <br>
 					<br>
 				</div>
 			</div>
@@ -157,5 +173,37 @@
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script>
+	
+	var url_string = window.location.href;
+	var url = new URL(url_string);
+	var msg = url.searchParams.get("msg");
+	
+	if(msg == null){
+		document.getElementById("alertMsg").hidden = true;
+	}else if(msg == "invalidCredentials" || msg == "invalidUser"){
+		document.getElementById("alertMsg").innerHTML += "You have entered invalid credentials. Please try again.";
+		document.getElementById("alertMsg").hidden = false;
+		document.getElementById("alertMsg").classList.add("alert-danger");
+	}
+	document.getElementById("userId").addEventListener("focus", addValidatedClass);
+	document.getElementById("userPatternPassword").addEventListener("focus", addValidatedClass);
+
+	function addValidatedClass(){
+		document.getElementById("loginForm").classList.add("was-validated");
+	}
+	
+		const togglePassword = document.querySelector('#togglePassword');
+		const password = document.querySelector('#userPatternPassword');
+
+		togglePassword.addEventListener('click', function(e) {
+			// toggle the type attribute
+			const type = password.getAttribute('type') === 'password' ? 'text'
+					: 'password';
+			password.setAttribute('type', type);
+			// toggle the eye slash icon
+			this.classList.toggle('fa-eye-slash');
+		});
+	</script>
 </body>
 </html>

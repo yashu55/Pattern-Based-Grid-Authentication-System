@@ -87,19 +87,20 @@ public class UserDaoImple implements UserDao {
 					if (user.getUserId() != null)
 						q.setString(0, user.getUserId());
 					List<User> li = q.list();
-					if (li == null)
+					if (li.size() == 0)
 						return null;
-					else {
-						user.setPatternType(li.get(0).getPatternType());
-						user.setUserEmail((li.get(0).getUserEmail()));
-						tr.commit();
-						session.flush();
-						session.close();
-					}
+					user.setPatternType(li.get(0).getPatternType());
+					user.setUserEmail((li.get(0).getUserEmail()));
+					tr.commit();
+					session.flush();
+					session.close();
+					return user;
+
 				} catch (Exception e) {
 					System.out.println("user");
+					return null;
 				}
-				return user;
+
 			}
 		});
 	}

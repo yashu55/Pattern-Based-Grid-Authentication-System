@@ -18,6 +18,11 @@
       document.getElementById("notification").innerHTML = "Draw New Pattern";
       document.getElementById('mySaveBtn').innerHTML = "Save Pattern";
       document.getElementById("registerBtn").disabled = true;
+      document.getElementById("notification").classList.remove("bg-warning");
+      document.getElementById("notification").classList.remove("text-light");
+      document.getElementById("notification").classList.remove("bg-success");
+
+
 
       //change field value
       //change all button to normal
@@ -31,27 +36,31 @@
           alert("Please draw a pattern!!");
           myResetFunction();
         } else if(drawPatternArray.length < 4){
-          alert("Pattern is too small. Minimum length: 4");
+          alert("The pattern drawn is too small. Minimum length: 4");
           myResetFunction();
         } else{
           if(!checking){
           document.getElementById("userPatternPassword").value = drawPatternArray;
           document.getElementById("mySaveBtn").innerHTML = "Confirm Pattern";
           document.getElementById("notification").innerHTML = "Confirm New Pattern";
+          document.getElementById("notification").classList.add("bg-warning");
+          document.getElementById("notification").classList.add("text-light");
+          alert("Pattern saved. Please draw again and confirm the pattern.");
           checking = true;
           lock.reset(); 
           }else{
               let originalValue =  document.getElementById("userPatternPassword").value;
               let newValue = drawPattern;
-             // console.log(originalValue);
-             // console.log(newValue);
-
               if(originalValue != newValue){
-                alert("Confirm Pattern wrong. Set again");
+            	lock.error();
+                alert("New pattern and confirm pattern does not match. Please set again.");
                 myResetFunction();
               }else if(originalValue == newValue){
 
-                document.getElementById("notification").innerHTML = "Pattern Matched!!";
+                document.getElementById("notification").innerHTML = "Pattern Matched.";
+                document.getElementById("notification").classList.remove("bg-warning");
+                document.getElementById("notification").classList.add("bg-success");
+                document.getElementById("notification").classList.add("text-light");
                 document.getElementById("registerBtn").disabled = false;
                 document.getElementById('mySaveBtn').style.visibility = 'hidden';
                 lock.reset();
