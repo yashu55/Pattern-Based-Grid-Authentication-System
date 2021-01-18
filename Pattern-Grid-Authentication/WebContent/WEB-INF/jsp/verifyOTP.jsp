@@ -21,7 +21,7 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/patternlock.css" />
-<title>Settings</title>
+<title>Reset Pattern</title>
 </head>
 <body class="bg-light">
 	<!-- NavBar -->
@@ -33,19 +33,20 @@
 			<!--Login Page -->
 			<div class="col-md-7 bg-light shadow px-4 pt-4">
 				<h4 class="display-4 ">
-					<i class="fa fa-cogs"></i> Settings
+					<i class="fa fa-cogs"></i> Verify OTP
 				</h4>
 				<p class="text-secondary"></p>
 				<hr>
 				<div id= "alertMsg" class="alert  alert-dismissible fade show"
 					role="alert">
+					
 					<button type="button" class="close" data-dismiss="alert"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<!--Reset form -->
-				<form class="" method="post" action="reset">
+				<form class="" method="post" action="verifyOTP" id="OTPForm">
 					<div class="form-group">
 						<label for="userId">User Id</label> <input type="text"
 							class="form-control" name="userId" id="userId"
@@ -58,47 +59,17 @@
 							aria-describedby="userEmailHelp" placeholder="Enter email"
 							value="<%=userDetails.getUserEmail()%>" disabled required>
 					</div>
-					<div class="container-fluid m-0 p-0">
-						<div class="row d-flex justify-content-center">
-							<h4 id="notification">Draw New Pattern</h4>
-						</div>
-						
-						<div class="row d-flex justify-content-center">
-							<div class="col d-flex justify-content-center align-items-center">
-								<!-- Pattern Div   -->
-								<div id="patternHolder"></div>
-							</div>
-						</div>
-						<div class="row d-flex justify-content-center">
-							<button type="button" name="mySaveBtn" id="mySaveBtn"
-								onclick="mySaveFunction()"
-								class="btn btn-sm btn-primary my-2 m-1">Save
-								Pattern</button>
-						</div>
-						<div class="row d-flex justify-content-center">
-							<button type="button" name="myResetBtn" id="myResetBtn"
-								onclick="myResetFunction()" class="btn btn-danger btn-sm m-1">Reset</button>
-						</div>
-						<div class="form-group">
+					 <div class="form-group">
+						<label for="otp">Enter OTP</label> <input type="text"
+							class="form-control" name="otp" id="otp"
+							aria-describedby="otpHelpId" placeholder="Enter OTP"
+							  required>
+					</div> 
 					
-						<label for="userPatternPassword">Pattern Password<span style="color:red;">*</span></label> 
-												<div class="row d-flex justify-content-start ml-1" >
-						
-						<input
-							type="password" class="form-control" name="userPatternPassword"
-							title="The pattern password should be entered using the random grid characters in a sequence in which the pattern was drawn."
-							id="userPatternPassword" placeholder="Pattern Password"
-							minlength="8" required>
-							 <i class=" far fa-eye" id="togglePassword" style="margin-left:-50px;
-							 margin-top:10px;
-							 cursor:pointer;"></i>
-					</div>
-					</div>
 						<div class="form-group">
 							<button type="submit" id="registerBtn" class="btn btn-success"
-								disabled>Reset Pattern</button>
+								>Verify OTP</button>
 						</div>
-				</div>
 				</form>
 			</div>
 		</div>
@@ -113,31 +84,30 @@
 		src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script
 		src="${pageContext.request.contextPath}/resources/javascript/patternlock.js"></script>
+	
 	<script>
-		let lock = new PatternLock("#patternHolder", {
-			matrix : [
-	<%=defaultPatternType.getPatternRowSize()%>
-		,
-	<%=defaultPatternType.getPatternColSize()%>
-		]
-		});
+	document.getElementById("otp").addEventListener("focus", addValidatedClass);
+
+	function addValidatedClass(){
+		document.getElementById("OTPForm").classList.add("was-validated");
+	}
+
+
+	var url_string = window.location.href;
+	var url = new URL(url_string);
+	var msg = url.searchParams.get("msg");
+
+	if(msg == null){
+		document.getElementById("alertMsg").hidden = true;
+	}else if(msg == "invalidOTP"){
+		document.getElementById("alertMsg").innerHTML += "OTP is incorrect. Please enter valid OTP.";
+		document.getElementById("alertMsg").hidden = false;
+		document.getElementById("alertMsg").classList.add("alert-danger");
+		console.log(document.getElementById("alertMsg"));
+	}
+	
+	
 	</script>
-	<script
-		src="${pageContext.request.contextPath}/resources/javascript/patternValidation.js"></script>
-
-<script >
-var url_string = window.location.href;
-var url = new URL(url_string);
-var msg = url.searchParams.get("msg");
-
-if(msg == null){
-	document.getElementById("alertMsg").hidden = true;
-}else if(msg == "resetSuccessful"){
-	document.getElementById("alertMsg").innerHTML += "Pattern password has been changed successfully!!";
-	document.getElementById("alertMsg").hidden = false;
-	document.getElementById("alertMsg").classList.add("alert-success");
-}
-
-</script>
+	
 </body>
 </html>

@@ -354,7 +354,7 @@ public class Usercntr {
 
 		boolean isSuccessfulRegister = userService.resetPattern(user);
 		if (isSuccessfulRegister)
-			res.sendRedirect("home?msg=Resetsuccessful");
+			res.sendRedirect("settings?msg=resetSuccessful");
 		else
 			res.sendRedirect("logout");
 		return null;
@@ -378,11 +378,15 @@ public class Usercntr {
 			return "home";
 
 		try {
-			user = userService.getUser(user);
+			User user2 = userService.getUser(user);
+			if (user2 == null) {
+				r.sendRedirect("forgotPattern?msg=invalidUser");
+				return null;
+			}
 			String OTP = RandomGridGenerator.getRandomOTP();
 
 			hs.setAttribute("OTP", OTP);
-			hs.setAttribute("OTPUser", user);
+			hs.setAttribute("OTPUser", user2);
 
 			SimpleMailMessage message = new SimpleMailMessage();
 			message.setFrom("cdacmumbai3@gmail.com");
@@ -390,22 +394,72 @@ public class Usercntr {
 			message.setSubject("Reset Pattern OTP");
 			message.setText("Your OTP is:-  " + OTP);
 			mailSender.send(message);
-			r.sendRedirect("resetForgotPattern");
+			r.sendRedirect("verifyOTP");
 
 		} catch (Exception e) {
-			r.sendRedirect("login");
+			System.out.println("fsdgfsdgdfgdfhbdghdghdghdg");
+			r.sendRedirect("forgotPattern?msg=invalidUser");
+		}
+		return null;
+	}
+
+	@RequestMapping("/verifyOTP")
+	public String verifyOTP(PatternType defaultPatternType, HttpSession session, HttpServletRequest req,
+			HttpServletResponse r, User user, Config config, ModelMap map) throws IOException {
+		session.setAttribute("loginValue", false);
+		String sessionUserId = (String) session.getAttribute("sessionUserId");
+		if (sessionUserId != null)
+			return "home";
+		user = (User) session.getAttribute("OTPUser");
+		if (user == null) {
+			r.sendRedirect("verifyOTP?msg=invalidOTP");
+			return null;
+		}
+		user = userService.getUser(user);
+		config = configDao.getConfigDefaultPatternType("patternGridSize");
+		defaultPatternType = patternTypeDao.getPatternType(Integer.parseInt(config.getParamValue()));
+		map.put("defaultPatternType", defaultPatternType);
+		map.put("userDetails", user);
+		return "verifyOTP";
+	}
+
+	@RequestMapping(value = "/verifyOTP", method = RequestMethod.POST)
+	public String verifyOTPSubmit(@RequestParam String otp, PatternType defaultPatternType, HttpSession hs,
+			HttpServletRequest req, HttpServletResponse r, User user, Config config, ModelMap map) throws IOException {
+		hs.setAttribute("loginValue", false);
+		String sessionUserId = (String) hs.getAttribute("sessionUserId");
+
+		if (sessionUserId != null)
+			return "home";
+		String actualOTP = (String) hs.getAttribute("OTP");
+
+		if (!actualOTP.equals(otp)) {
+			r.sendRedirect("verifyOTP?msg=invalidOTP");
+			return null;
+		} else {
+
+			hs.setAttribute("isOTPVerified", true);
+			r.sendRedirect("resetForgotPattern");
 		}
 		return null;
 	}
 
 	@RequestMapping("/resetForgotPattern")
 	public String resetForgotPattern(PatternType defaultPatternType, HttpSession session, HttpServletRequest req,
-			HttpServletResponse r, User user, Config config, ModelMap map) {
+			HttpServletResponse r, User user, Config config, ModelMap map) throws IOException {
 		session.setAttribute("loginValue", false);
 		String sessionUserId = (String) session.getAttribute("sessionUserId");
 		if (sessionUserId != null)
 			return "home";
+		boolean isOTPVerified = (boolean) session.getAttribute("isOTPVerified");
+
+		if (!isOTPVerified) {
+
+			r.sendRedirect("forgotPattern?msg=OTPError");
+			return null;
+		}
 		user = (User) session.getAttribute("OTPUser");
+
 		user = userService.getUser(user);
 		config = configDao.getConfigDefaultPatternType("patternGridSize");
 		defaultPatternType = patternTypeDao.getPatternType(Integer.parseInt(config.getParamValue()));
@@ -416,8 +470,8 @@ public class Usercntr {
 	}
 
 	@RequestMapping(value = "/resetForgotPattern", method = RequestMethod.POST)
-	public String resetForgotPattern(@RequestParam String otp, PatternType defaultPatternType, HttpSession hs,
-			HttpServletRequest req, HttpServletResponse res, User user, Config config) throws IOException {
+	public String resetForgotPattern(PatternType defaultPatternType, HttpSession hs, HttpServletRequest req,
+			HttpServletResponse res, User user, Config config) throws IOException {
 		hs.setAttribute("loginValue", false);
 		String sessionUserId = (String) hs.getAttribute("sessionUserId");
 		User user2 = (User) hs.getAttribute("OTPUser");
@@ -425,12 +479,13 @@ public class Usercntr {
 		user.setUserEmail(user2.getUserEmail());
 		if (sessionUserId != null)
 			return "home";
-		String actualOTP = (String) hs.getAttribute("OTP");
+		boolean isOTPVerified = (boolean) hs.getAttribute("isOTPVerified");
 
-		if (!actualOTP.equals(otp)) {
-			res.sendRedirect("forgotPattern?error=wrongOTP");
+		if (!isOTPVerified) {
+			res.sendRedirect("forgotPattern?msg=OTPError");
 			return null;
 		}
+
 		// Adding default patternType according to set config
 		config = configDao.getConfigDefaultPatternType("patternGridSize");
 		System.out.println(config);
@@ -473,7 +528,7 @@ public class Usercntr {
 
 		boolean isSuccessfulRegister = userService.resetPattern(user);
 		if (isSuccessfulRegister)
-			res.sendRedirect("login");
+			res.sendRedirect("login?msg=successful");
 		else
 			res.sendRedirect("logout");
 		return null;

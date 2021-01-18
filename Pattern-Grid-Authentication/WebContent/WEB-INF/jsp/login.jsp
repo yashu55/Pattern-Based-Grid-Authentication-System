@@ -158,8 +158,10 @@
 					</div>
 				</form>
 				<div>
-					<a class="text-primary " href="forgotPattern">Forgot Pattern?</a> |
-					<a class="text-primary " href="register">Register User</a> <br>
+			
+					<a class="text-primary " href="register">Register User</a> |
+					<a class="text-primary " href="forgotPattern">Forgot Pattern?</a>
+					<br>
 					<br>
 				</div>
 			</div>
@@ -185,7 +187,16 @@
 		document.getElementById("alertMsg").innerHTML += "You have entered invalid credentials. Please try again.";
 		document.getElementById("alertMsg").hidden = false;
 		document.getElementById("alertMsg").classList.add("alert-danger");
+	}else if(msg == "successful"){
+		document.getElementById("alertMsg").innerHTML += "New Pattern is set successfully. Login to continue.";
+		document.getElementById("alertMsg").hidden = false;
+		document.getElementById("alertMsg").classList.add("alert-success");
+		console.log(document.getElementById("alertMsg"));
 	}
+	
+	
+	
+	
 	document.getElementById("userId").addEventListener("focus", addValidatedClass);
 	document.getElementById("userPatternPassword").addEventListener("focus", addValidatedClass);
 

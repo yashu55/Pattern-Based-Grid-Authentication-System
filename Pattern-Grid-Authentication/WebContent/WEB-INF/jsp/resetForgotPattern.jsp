@@ -33,12 +33,12 @@
 			<!--Login Page -->
 			<div class="col-md-7 bg-light shadow px-4 pt-4">
 				<h4 class="display-4 ">
-					<i class="fa fa-cogs"></i> Reset Pattern
+					<i class="fa fa-cogs"></i> Forgot Pattern
 				</h4>
 				<p class="text-secondary"></p>
 				<hr>
 				<!--Reset form -->
-				<form class="" method="post" action="resetForgotPattern">
+				<form class="" method="post" action="resetForgotPattern" id="forgotPatternForm">
 					<div class="form-group">
 						<label for="userId">User Id</label> <input type="text"
 							class="form-control" name="userId" id="userId"
@@ -51,15 +51,17 @@
 							aria-describedby="userEmailHelp" placeholder="Enter email"
 							value="<%=userDetails.getUserEmail()%>" disabled required>
 					</div>
-					<div class="form-group">
-						<label for="otp">Enter OTP</label> <input type="text"
-							class="form-control" name="otp" id="otp"
-							aria-describedby="otpHelpId" placeholder="Enter OTP"
-							  required>
-					</div>
+					
 					<div class="container-fluid m-0 p-0">
 						<div class="row d-flex justify-content-center">
 							<h4 id="notification">Draw New Pattern</h4>
+						</div>
+						
+						<div class="row d-flex justify-content-center">
+							<div class="col d-flex justify-content-center align-items-center">
+								<!-- Pattern Div   -->
+								<div id="patternHolder"></div>
+							</div>
 						</div>
 						<div class="row d-flex justify-content-center">
 							<button type="button" name="mySaveBtn" id="mySaveBtn"
@@ -68,23 +70,18 @@
 								Pattern</button>
 						</div>
 						<div class="row d-flex justify-content-center">
-							<div class="col d-flex justify-content-center align-items-center">
-								<!-- Pattern Div   -->
-								<div id="patternHolder"></div>
-							</div>
-						</div>
-						<div class="row d-flex justify-content-center">
 							<button type="button" name="myResetBtn" id="myResetBtn"
 								onclick="myResetFunction()" class="btn btn-danger btn-sm m-1">Reset</button>
 						</div>
 						<div class="form-group">
 							<input type="text" class="form-control"
-								name="userPatternPassword" id="userPatternPassword" hidden />
+								name="userPatternPassword" id="userPatternPassword" hidden="true" />
 						</div>
 						<div class="form-group">
 							<button type="submit" id="registerBtn" class="btn btn-success"
-								disabled>Reset Pattern</button>
+								disabled>Save New Pattern</button>
 						</div>
+					</div>
 				</form>
 			</div>
 		</div>
@@ -109,6 +106,20 @@
 		});
 	</script>
 	<script
+	
 		src="${pageContext.request.contextPath}/resources/javascript/patternValidation.js"></script>
+
+<script >
+
+document.getElementById("userPatternPassword").addEventListener("focus", addValidatedClass);
+
+function addValidatedClass(){
+	document.getElementById("forgotPatternForm").classList.add("was-validated");
+}
+
+
+
+</script>
+
 </body>
 </html>
