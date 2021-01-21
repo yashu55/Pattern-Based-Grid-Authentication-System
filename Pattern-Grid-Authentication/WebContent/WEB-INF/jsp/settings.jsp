@@ -47,13 +47,13 @@
 				<!--Reset form -->
 				<form class="" method="post" action="reset">
 					<div class="form-group">
-						<label for="userId">User Id</label> <input type="text"
+						<label for="userId">User Id<span style="color:red;">*</span></label> <input type="text"
 							class="form-control" name="userId" id="userId"
 							aria-describedby="userIdHelpId" placeholder="Enter User Id"
 							value="<%=userDetails.getUserId()%>" disabled required>
 					</div>
 					<div class="form-group">
-						<label for="userEmail">Email address</label> <input type="email"
+						<label for="userEmail">Email address<span style="color:red;">*</span></label> <input type="email"
 							class="form-control" id="userEmail" name="userEmail"
 							aria-describedby="userEmailHelp" placeholder="Enter email"
 							value="<%=userDetails.getUserEmail()%>" disabled required>
@@ -81,17 +81,13 @@
 						</div>
 						<div class="form-group">
 					
-						<label for="userPatternPassword">Pattern Password<span style="color:red;">*</span></label> 
-												<div class="row d-flex justify-content-start ml-1" >
 						
 						<input
 							type="password" class="form-control" name="userPatternPassword"
 							title="The pattern password should be entered using the random grid characters in a sequence in which the pattern was drawn."
 							id="userPatternPassword" placeholder="Pattern Password"
-							minlength="8" required>
-							 <i class=" far fa-eye" id="togglePassword" style="margin-left:-50px;
-							 margin-top:10px;
-							 cursor:pointer;"></i>
+							minlength="8" required hidden>
+							
 					</div>
 					</div>
 						<div class="form-group">

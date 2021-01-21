@@ -21,11 +21,12 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/patternlock.css" />
-<title>Reset Pattern</title>
+<title>Verify OTP</title>
 </head>
 <body class="bg-light">
 	<!-- NavBar -->
 	<jsp:include page="navbar.jsp" />
+	<br>
 	<!-- Body -->
 	<!--Reset Form -->
 	<div class="container-fluid my-4 ">
@@ -48,19 +49,19 @@
 				<!--Reset form -->
 				<form class="" method="post" action="verifyOTP" id="OTPForm">
 					<div class="form-group">
-						<label for="userId">User Id</label> <input type="text"
+						<label for="userId">User Id<span style="color:red;">*</span></label> <input type="text"
 							class="form-control" name="userId" id="userId"
 							aria-describedby="userIdHelpId" placeholder="Enter User Id"
 							value="<%=userDetails.getUserId()%>" disabled required>
 					</div>
 					<div class="form-group">
-						<label for="userEmail">Email address</label> <input type="email"
+						<label for="userEmail">Email address<span style="color:red;">*</span></label> <input type="email"
 							class="form-control" id="userEmail" name="userEmail"
 							aria-describedby="userEmailHelp" placeholder="Enter email"
 							value="<%=userDetails.getUserEmail()%>" disabled required>
 					</div>
 					 <div class="form-group">
-						<label for="otp">Enter OTP</label> <input type="text"
+						<label for="otp">Enter OTP<span style="color:red;">*</span></label> <input type="text"
 							class="form-control" name="otp" id="otp"
 							aria-describedby="otpHelpId" placeholder="Enter OTP"
 							  required>

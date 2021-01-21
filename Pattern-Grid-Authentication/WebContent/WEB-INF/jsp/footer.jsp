@@ -5,7 +5,7 @@
 		<div class="col-md-6">
 			<div class="text-center text-light py-2">
 				<i class="fa fa-copyright"></i> 2020 Copyright: <a
-					class="text-light " href="#">authenticate.com</a>
+					class="text-light " href="#">pAuthenticate.com</a>
 			</div>
 		</div>
 	</div>

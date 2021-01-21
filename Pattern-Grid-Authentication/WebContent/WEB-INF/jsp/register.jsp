@@ -46,7 +46,7 @@
 				<!--Register form -->
 				<form class="" method="post" action="register" id ="loginForm">
 					<div class="form-group">
-						<label for="userId">User Id*</label> <input type="text"
+						<label for="userId">User Id<span style="color:red;">*</span></label> <input type="text"
 							class="form-control" name="userId" id="userId"
 							pattern="^[a-zA-Z][a-zA-Z0-9_]{3,25}$"
 							title="User Id should start with alphabet. It can be alphanumeric with 
@@ -55,7 +55,7 @@
 							required>
 					</div>
 					<div class="form-group">
-						<label for="userEmail">Email*</label> <input type="email"
+						<label for="userEmail">Email<span style="color:red;">*</span></label> <input type="email"
 							class="form-control" id="userEmail" name="userEmail"
 							aria-describedby="userEmailHelp" placeholder="Enter email"
 							required>

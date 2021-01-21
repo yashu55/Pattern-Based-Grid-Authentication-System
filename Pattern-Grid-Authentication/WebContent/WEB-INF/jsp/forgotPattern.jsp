@@ -23,6 +23,10 @@
 <body class="bg-light">
 	<!-- NavBar -->
 	<jsp:include page="navbar.jsp" />
+	<br>
+	<br>
+	<br>
+	<br>
 	<div class="container-fluid my-4 ">
 		<div class="row justify-content-around">
 			<!--Login Page -->
@@ -59,6 +63,11 @@
 			</div>
 		</div>
 	</div>
+	<br>
+	<br>
+	<br>
+	<br>
+	
 	<!-- Footer -->
 	<jsp:include page="footer.jsp" />
 	<script

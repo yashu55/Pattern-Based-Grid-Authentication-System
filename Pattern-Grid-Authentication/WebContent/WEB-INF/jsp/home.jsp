@@ -18,6 +18,10 @@
 <body class="bg-light">
 	<!-- NavBar -->
 	<jsp:include page="navbar.jsp" />
+	<br>
+	<br>
+	<br>
+	
 	<div class="container-fluid my-4 ">
 		<div class="row justify-content-around">
 			<!--Login Page -->
@@ -27,11 +31,16 @@
 					<%=(String) session.getAttribute("sessionUserId")%>
 					!!
 				</h4>
-				<p class="text-secondary"></p>
+				
 				<hr>
+				<p class="text-justify">Pattern-Based Grid Authentication system is a web framework used to authenticate users for a particular service. This is a unique way to keep user authenticity by using Pattern-based password on the web services. This system allows user to register by using username and pattern. At the time of login, user has to give his username and a recall-based password by visualizing the randomly generated characters from a custom grid displayed to him. Hence, the user authentication is secure user-friendly yet robust compared to traditional textual password, 4-digit pin and classical pattern-lock system.</p>
 			</div>
 		</div>
 	</div>
+	<br>
+	<br>
+	
+	
 	<!-- Footer -->
 	<jsp:include page="footer.jsp" />
 	<script

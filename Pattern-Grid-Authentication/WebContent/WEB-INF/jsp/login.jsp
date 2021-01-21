@@ -23,6 +23,8 @@
 <body class="bg-light">
 	<!-- NavBar -->
 	<jsp:include page="navbar.jsp" />
+	<br>
+	<br>
 	<%
 		Boolean beforeRandomPattern = (Boolean) session.getAttribute("loginValue");
 		if (beforeRandomPattern == null)
@@ -167,6 +169,10 @@
 			</div>
 		</div>
 	</div>
+	
+	<br>
+	<br>
+	
 	<!-- Footer -->
 	<jsp:include page="footer.jsp" />
 	<script
