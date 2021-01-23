@@ -1,5 +1,6 @@
 # Pattern-Based-Grid-Authentication-System
 
+# Technologies used
 # Spring MVC Hibernate JPA JSP JavaScript BootStrap
 
 Pattern-based grid authentication system is a unique, user-friendly yet robust way of authenticating the users. The project is an advancement over the traditional 4-digit Pin, textual password and pattern-lock system. Existing classical authentication techniques such as textual passwords and pattern-lock are prone to various attacks. The most popular textual-based password system is prone to shoulder surfing attacks. Another popular authentication method is a pattern-lock method. It is widely used on mobile devices and smartphones. A pattern-lock is simple and easier for the user to remember, but it has limitations. Numerous research studies show that users choose patterns from a small space which makes them vulnerable to a variety of attacks such as guessing attacks, shoulder-surfing attacks and smudge attacks. By this project, we allow users to use a recall-based pattern-grid authentication system, instead of the traditional pattern-lock, 4-digit pin or textual password. Our system will help in preventing user’s personal assets from being stolen by their adversaries and provide an easy safe and secure way to login.
