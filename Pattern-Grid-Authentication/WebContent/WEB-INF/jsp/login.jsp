@@ -203,12 +203,12 @@
 	
 	
 	
-	document.getElementById("userId").addEventListener("focus", addValidatedClass);
+	/* document.getElementById("userId").addEventListener("focus", addValidatedClass);
 	document.getElementById("userPatternPassword").addEventListener("focus", addValidatedClass);
 
 	function addValidatedClass(){
 		document.getElementById("loginForm").classList.add("was-validated");
-	}
+	} */
 	
 		const togglePassword = document.querySelector('#togglePassword');
 		const password = document.querySelector('#userPatternPassword');

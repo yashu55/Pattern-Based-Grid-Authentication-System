@@ -16,9 +16,9 @@
 		<property name="driverClassName"
 			value="com.mysql.cj.jdbc.Driver"></property>
 		<property name="url"
-			value="jdbc:mysql://localhost:3306/patternGrid?useSSL=false"></property>
-		<property name="username" value="root"></property>
-		<property name="password" value="Manimau@11"></property>
+			value="jdbc:mysql://patterngrid.cqk1ksiejqzq.us-east-1.rds.amazonaws.com:3306/patternGrid?useSSL=false"></property>
+		<property name="username" value="admin"></property>
+		<property name="password" value="Pattern1234"></property>
 	</bean>
 
 	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" 
