@@ -1,4 +1,4 @@
-<%@page import="com.google.gson.Gson"%>
+<%@page import="com.google.gson.Gson" %>
 <%@page
 	import="org.springframework.http.converter.json.GsonBuilderUtils"%>
 <%@page import="com.patternGrid.dto.User"%>

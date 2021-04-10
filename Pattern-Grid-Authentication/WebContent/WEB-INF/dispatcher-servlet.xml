@@ -17,8 +17,8 @@
 			value="com.mysql.cj.jdbc.Driver"></property>
 		<property name="url"
 			value="jdbc:mysql://localhost:3306/patternGrid?useSSL=false"></property>
-		<property name="username" value=""></property>
-		<property name="password" value=""></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="Manimau@11"></property>
 	</bean>
 
 	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" 
